@@ -5,7 +5,7 @@ import ssl
 import socket
 # The following lines, are for setting the constants that the irc bot
 # will connect to.
-OWNER = "NDJ" #Set a bot owner, who can reset and control bot
+OWNER = "~NDJ" #Set a bot owner, who can reset and control bot
 HOST = "irc.rizon.net" #All the constants used here, can be edited, this is simply for testing
 CHANS = ["#ndjr"] # A list, so we can connect to multiple chans
 NICK = "NDJr"
@@ -20,7 +20,7 @@ ADMIN can pause, set allowed, ignored and have bot join & part chans
 USER can interact with the bot,its purpose
 IGNORED will simply have their commands disregarded.
 """
-ADMIN = []
+ADMIN = [OWNER]
 ALLOWED = []
 IGNORED = []
 """
@@ -37,7 +37,6 @@ socket.connect((HOST, 6697))
 irc = ssl.wrap_socket(socket)
 irc.send("USER " + NICK + " " + NICK + " " + NICK + " :NDJrbot\n")
 irc.send("NICK " + NICK + "\n")
-
 """
 Now, a loop to receive data
 """
@@ -57,7 +56,16 @@ while True:
 	if text.find("Password accepted - you are now recognized.") != -1:
 		for chan in CHANS:
 			irc.send('JOIN ' + chan + '\r\n')
+	try:
+		nick = text.split(":")[1].split("!")[0]
+		chan = text.split(" ")[2]
+		message = ":".join(text.split(":")[2:])
+		message_prefix = text.strip().split()[0]
+		user = text.split("!")[1].split("@")[0]
+	except IndexError:
+		pass
+	if text.find("!quit") != -1 and user in ADMIN:
+		exit()
+	if text.find("Hello {0}!".format(NICK)) != -1:
+		ircfunctions.bot_send(irc, chan, "Hello {0}!".format(nick))
 	print text
-	"""
-	Will be adding message parsing, etc in the future.
-	"""
