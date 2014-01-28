@@ -43,6 +43,7 @@ Now, a loop to receive data
 while True:
      # This is the parsing of the message
 	text = irc.recv(4096) # Text, will be the data that we get    
+	bot = ircfunctions.bot(irc)
 	"""
 	The first things that need to be checked for, are the PINGS from the server
 	the message of the day, and nickserv PRICMSGs
@@ -67,5 +68,5 @@ while True:
 	if text.find("!quit") != -1 and user in ADMIN:
 		exit()
 	if text.find("Hello {0}!".format(NICK)) != -1:
-		ircfunctions.bot_send(irc, chan, "Hello {0}!".format(nick))
+		bot.bot_send(chan, "Hello {0}!".format(nick))
 	print text
