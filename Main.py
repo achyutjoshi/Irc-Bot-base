@@ -37,13 +37,13 @@ socket.connect((HOST, 6697))
 irc = ssl.wrap_socket(socket)
 irc.send("USER " + NICK + " " + NICK + " " + NICK + " :NDJrbot\n")
 irc.send("NICK " + NICK + "\n")
+bot = ircfunctions.bot(irc) #The bot object
 """
 Now, a loop to receive data
 """
 while True:
      # This is the parsing of the message
 	text = irc.recv(4096) # Text, will be the data that we get    
-	bot = ircfunctions.bot(irc)
 	"""
 	The first things that need to be checked for, are the PINGS from the server
 	the message of the day, and nickserv PRICMSGs
