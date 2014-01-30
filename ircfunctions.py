@@ -1,13 +1,16 @@
 #!/usr/bin/env python
-#Filename: irc.py
+#Filename: ircfunctions.py
+import sys
 """
 This is a file containing several of the functions that will be used 
 by the irc bot. This includes send <expand as things are added> 
 """
+def out(data):
+	sys.stderr.write(data + "\n")
 class bot:
 	def __init__(self, irc):
 		self.irc = irc
-	def bot_send(self, chan, message):
+	def send_message(self, chan, message):
 		"""
 		This will be the function for sending messages.
 		This takes two arguments, and sends a message, to the chan of the 
@@ -15,6 +18,10 @@ class bot:
 		It then prints out something for the console, signifying this event.
 		"""
 		self.irc.send("PRIVMSG {0} :{1}\r\n".format(chan, message))
-		print "BOT ==> {0} | {1}".format(chan, message)
-	
-
+		out("BOT ==> {0} | {1}".format(chan, message))
+	def send(self, message):
+		"""
+		This is for sending things to the server as opposed to a chan/user
+		"""
+		self.irc.send(message + "\r\n")
+		out("BOT ==> {0}".format(message))

@@ -50,23 +50,29 @@ while True:
 	"""
 	
 	if text.find("PING") != -1:
-		irc.send('PONG ' + text.split()[1] + '\r\n')
+		bot.send('PONG ' + text.split()[1] + '\r\n')
 		print "PINGED"
 	if text.find("MOTD") != -1:
-		irc.send("PRIVMSG Nickserv :identify {0}\r\n".format(NICK_KEY))
+		bot.send("PRIVMSG Nickserv :identify {0}\r\n".format(NICK_KEY))
 	if text.find("Password accepted - you are now recognized.") != -1:
 		for chan in CHANS:
-			irc.send('JOIN ' + chan + '\r\n')
+			bot.send('JOIN ' + chan + '\r\n')
+	if text.find("Nickname in user") != -1:
+		bot.send("PRIVMSG Nickserv :GHOST {0}\r\n".format(NICK_KEY))
 	try:
 		nick = text.split(":")[1].split("!")[0]
 		chan = text.split(" ")[2]
 		message = ":".join(text.split(":")[2:])
-		message_prefix = text.strip().split()[0]
+		message_prefix = message.split()[0]
 		user = text.split("!")[1].split("@")[0]
 	except IndexError:
 		pass
-	if text.find("!quit") != -1 and user in ADMIN:
-		exit()
-	if text.find("Hello {0}!".format(NICK)) != -1:
-		bot.bot_send(chan, "Hello {0}!".format(nick))
-	print text
+	if message_prefix == "!quit" and user in ADMIN:
+		bot.send("QUIT :Goodbye")
+		exit() 
+	if message_prefix == "!say":
+		bot.send_message(chan,  nick + ", " + " ".join(message.split()[1::]))
+	
+
+	ircfunctions.out(text)
+
