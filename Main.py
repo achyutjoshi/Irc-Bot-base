@@ -11,6 +11,7 @@ CHANS = ["#ndjr"] # A list, so we can connect to multiple chans
 NICK = "NDJr"
 USER = 'NDJr'
 IDENT = 'NDJr'
+PORT = 6667
 """
 The bot runs with a user heirchy, of:
 OWNER --> ADMIN --> ALLOWED --> USER --> IGNORED
@@ -33,7 +34,7 @@ with open("key.txt", "r") as key_file: #This file is NOT tracked in git :)
 #Now, connect
 socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 print 'BOT IS CONNECTING TO:' + HOST
-socket.connect((HOST, 6697))
+socket.connect((HOST, PORT))
 irc = ssl.wrap_socket(socket)
 irc.send("USER " + NICK + " " + NICK + " " + NICK + " :NDJrbot\n")
 irc.send("NICK " + NICK + "\n")
