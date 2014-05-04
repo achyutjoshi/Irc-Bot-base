@@ -6,7 +6,7 @@ This is a file containing several of the functions that will be used
 by the irc bot. This includes send <expand as things are added> 
 """
 def out(data):
-	sys.stderr.write(data + "\n")
+	sys.stdout.write(data + "\n")
 class bot:
 	def __init__(self, irc):
 		self.irc = irc
